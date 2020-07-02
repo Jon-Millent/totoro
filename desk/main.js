@@ -1,5 +1,5 @@
 // Modules to control application life and create native browser window
-const {app, BrowserWindow} = require('electron')
+const { app, BrowserWindow, dialog } = require('electron')
 const path = require('path')
 
 function createWindow () {
@@ -9,7 +9,7 @@ function createWindow () {
     useContentSize: true,
     width: 1024,
     skipTaskbar: true,
-    frame: false,
+    // frame: false,
     resizable: false,
     webPreferences: {
       preload: path.join(__dirname, 'preload.js')
@@ -34,6 +34,13 @@ app.whenReady().then(() => {
     // dock icon is clicked and there are no other windows open.
     if (BrowserWindow.getAllWindows().length === 0) createWindow()
   })
+
+
+  dialog.showMessageBox({
+    message: app.getPath('desktop')
+  })
+
+
 })
 
 // Quit when all windows are closed, except on macOS. There, it's common
