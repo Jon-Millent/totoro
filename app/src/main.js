@@ -9,7 +9,7 @@ import { Button } from 'view-design';
 Vue.component('Button', Button);
 
 Vue.config.productionTip = false
-
+console.log('app init')
 new Vue({
   render: h => h(App),
   router

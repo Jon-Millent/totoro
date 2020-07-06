@@ -17,8 +17,8 @@ function createWindow () {
     height: 768,
     useContentSize: true,
     width: 1024,
-    skipTaskbar: true,
-    frame: false,
+    skipTaskbar: env !== 'dev',
+    frame: env === 'dev',
     resizable: false,
     webPreferences: {
       preload: path.join(__dirname, 'preload.js')

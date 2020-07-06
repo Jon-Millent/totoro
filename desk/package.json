@@ -21,5 +21,10 @@
     "cross-env": "^7.0.2",
     "electron": "^9.0.5",
     "electron-builder": "^22.7.0"
+  },
+  "dependencies": {
+    "extract-file-icon": "^0.3.2",
+    "icon-extractor": "^1.0.3",
+    "windows-system-icon": "^0.0.8"
   }
 }
