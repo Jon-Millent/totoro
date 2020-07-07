@@ -23,8 +23,8 @@
     "electron-builder": "^22.7.0"
   },
   "dependencies": {
-    "extract-file-icon": "^0.3.2",
-    "icon-extractor": "^1.0.3",
-    "windows-system-icon": "^0.0.8"
+    "icon-promise": "^1.1.1",
+    "jimp": "^0.14.0",
+    "shortid": "^2.2.15"
   }
 }
