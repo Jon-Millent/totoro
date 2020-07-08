@@ -7,15 +7,17 @@ const JImgHelper = require('./src/modules/JimgHelper')
 const iconPromise = require('icon-promise');
 const path = require('path');
 const shortid = require('shortid')
+const wallpaper = require('wallpaper');
 
 const baseUrl = __dirname
 
 const accessDir = path.join(baseUrl, 'access')
 
-window.totoroNative = {
+
+class Preload {
 
   // 获取exe图标
-  async getEXEIconFormPath(exeFilePath) {
+  static async getEXEIconFormPath(exeFilePath) {
     if (!exeFilePath) {
       return null
     }
@@ -28,8 +30,8 @@ window.totoroNative = {
     const largeInfo = await iconPromise.getIcon256(exeFilePath, fileName)
     const smallInfo = await iconPromise.getIcon48(exeFilePath, fileName)
 
-    const largerBuffer = Buffer.from(largeInfo.Base64ImageData, 'base64') // Ta-da
-    const smallBuffer = Buffer.from(smallInfo.Base64ImageData, 'base64') // Ta-da
+    const largerBuffer = Buffer.from(largeInfo.Base64ImageData, 'base64')
+    const smallBuffer = Buffer.from(smallInfo.Base64ImageData, 'base64')
 
     let bigTransparent = await JImgHelper.getImageTransparentRatioFromBuffer(
       largerBuffer
@@ -49,4 +51,16 @@ window.totoroNative = {
     return outputPath
   }
 
+  // 更换壁纸
+  static async changeWallpaper(path) {
+    return await wallpaper.set(path)
+  }
+
+  // 获取当前壁纸
+  static async getWallpaper() {
+    return await wallpaper.get()
+  }
+
 }
+
+window.totoroNative = Preload
