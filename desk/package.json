@@ -1,11 +1,12 @@
 {
   "name": "totoro",
   "version": "1.0.0",
-  "description": "\uD83D\uDC32\uD83D\uDE38totoro is the launcher for windows",
+  "description": "🐲😸totoro is the launcher for windows",
   "main": "main.js",
   "scripts": {
     "start": "cross-env NODE_ENV=dev electron .",
-    "build": "cross-env NODE_ENV=pord electron-builder"
+    "build": "cross-env NODE_ENV=pord electron-builder",
+    "rebuild": "electron-rebuild"
   },
   "repository": "https://github.com/Jon-Millent/totoro.git",
   "keywords": [
@@ -19,7 +20,8 @@
   "devDependencies": {
     "cross-env": "^7.0.2",
     "electron": "^9.0.5",
-    "electron-builder": "^22.7.0"
+    "electron-builder": "^22.7.0",
+    "electron-rebuild": "^1.11.0"
   },
   "dependencies": {
     "electron-store": "^5.2.0",
