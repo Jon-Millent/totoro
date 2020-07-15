@@ -18,16 +18,16 @@ function createWindow () {
     useContentSize: true,
     width: 1024,
     skipTaskbar: env !== 'dev',
-    frame: env === 'dev',
+    frame: false,
     resizable: false,
     webPreferences: {
       preload: path.join(__dirname, 'preload.js')
     },
     maximizable: true
   })
-  mainWindow.maximize()
   // and load the index.html of the app.
 
+  mainWindow.maximize()
   mainWindow.loadURL(targetEnv.file)
 
   // Open the DevTools.
@@ -45,8 +45,6 @@ app.whenReady().then(() => {
     // dock icon is clicked and there are no other windows open.
     if (BrowserWindow.getAllWindows().length === 0) createWindow()
   })
-
-
 })
 
 // Quit when all windows are closed, except on macOS. There, it's common

@@ -18,8 +18,7 @@
 <style lang="scss">
     .docker-controller {
         width: 100%;
-        height: 60px;
-        margin: 0 auto;
+        height: 110px;
         background-color: #000;
     }
 </style>

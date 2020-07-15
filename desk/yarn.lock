@@ -2863,6 +2863,11 @@ widest-line@^3.1.0:
   dependencies:
     string-width "^4.0.0"
 
+windows-shortcuts@^0.1.6:
+  version "0.1.6"
+  resolved "https://registry.npm.taobao.org/windows-shortcuts/download/windows-shortcuts-0.1.6.tgz#27970c5c346ffd81821c3e12528c0babca0a5a99"
+  integrity sha1-J5cMXDRv/YGCHD4SUowLq8oKWpk=
+
 wrap-ansi@^5.1.0:
   version "5.1.0"
   resolved "https://registry.npm.taobao.org/wrap-ansi/download/wrap-ansi-5.1.0.tgz#1fd1f67235d5b6d0fee781056001bfb694c03b09"

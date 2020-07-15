@@ -7,6 +7,10 @@ const router = new Router({
 
   routes: [
     {
+      path: '/',
+      redirect: '/desktop',
+    },
+    {
       path: '/desktop',
       component: () => import('./views/desk/desktop'),
       meta: {
