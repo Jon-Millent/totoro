@@ -21,7 +21,8 @@ function createWindow () {
     frame: false,
     resizable: false,
     webPreferences: {
-      preload: path.join(__dirname, 'preload.js')
+      preload: path.join(__dirname, 'preload.js'),
+      webSecurity: false
     },
     maximizable: true
   })

@@ -26,10 +26,20 @@ class TotoroNative {
     return window.totoroNative.getWallpaper()
   }
 
-  // 获取桌面应用信息
-  static async getDesktopApplications() {
-    let list = await window.totoroNative.getDesktopApplications()
-    console.log(list)
+  static async showChooseFileDialog(filter = {}) {
+    return await window.totoroNative.showChooseFileDialog(filter)
+  }
+
+  static async getEXEIconFormPath(path = '') {
+    return await window.totoroNative.getEXEIconFormPath(path)
+  }
+
+  static async getFileNativeImage(path = '', config = {}){
+    return await window.totoroNative.getFileNativeImage(path, config)
+  }
+
+  static async getLargeImageFromNativeImage(nativeImage) {
+    return await window.totoroNative.getLargeImageFromNativeImage(nativeImage)
   }
 
 }

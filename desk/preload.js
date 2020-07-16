@@ -11,6 +11,14 @@ const store = new Store();
 
 class Preload {
 
+  static async sleep(time = 1000) {
+    return new Promise(resolve => {
+      setTimeout(()=>{
+        resolve()
+      }, time)
+    })
+  }
+
   // 获取exe图标
   static async getEXEIconFormPath(exeFilePath) {
 
@@ -97,44 +105,26 @@ class Preload {
     store.get(key)
   }
 
-
-  // 获取桌面应用[名称, path, icon]
-  static async getDesktopApplications() {
-
-    const { shell } = require('electron');
-
-
-    const { readdirSync } = require('fs')
-    let desktopPath = remote.app.getPath('desktop')
-    let fileList = readdirSync(desktopPath)
-    let outputList = []
-    console.log(fileList, '<------------')
-
-    for(let i=0; i<fileList.length; i++) {
-      let item = fileList[i]
-      if(item.indexOf('.lnk') !== -1) {
-        try {
-          let tPath = path.join(desktopPath, item)
-          const info = shell.readShortcutLink(
-            tPath
-          );
-          let icon = await Preload.getEXEIconFormPath(tPath)
-          info.cwd && outputList.push({
-            name: item.replace('.lnk', ''),
-            icon,
-            target: info.target,
-            cwd: info.cwd
-          })
-        } catch (e) {
-          //
-          console.log(e, 'e')
-        }
-      }
-    }
-
-
-    console.log(outputList)
+  static showChooseFileDialog(filter) {
+    return new Promise(resolve => {
+      remote.dialog.showOpenDialog(filter || {}).then(result => {
+        resolve({
+          result
+        })
+      }).catch(err => {
+        resolve({
+          err
+        })
+      })
+    })
   }
+
+  static async getFileNativeImage(path = '', config) {
+    return await remote.app.getFileIcon(path, Object.assign({
+      size: 'normal'
+    }, config))
+  }
+
 }
 
 window.totoroNative = Preload

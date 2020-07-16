@@ -16,9 +16,12 @@
 </script>
 
 <style lang="scss">
+    @import "../assets/scss/baseSize";
+
     .docker-controller {
         width: 100%;
-        height: 110px;
-        background-color: #000;
+        height: $dockerHeight;
+        background-color: rgba(255, 255, 255, .6);
+        backdrop-filter: blur(4px);
     }
 </style>

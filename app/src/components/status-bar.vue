@@ -15,13 +15,16 @@
 </script>
 
 <style lang="scss">
+    @import "../assets/scss/baseSize";
+
     .status-bar {
         background-color: rgba(255, 255, 255, .6);
-        border-bottom: 1px solid #eee;
-        height: 26px;
+        height: $statusBarHeight;
         display: flex;
         justify-content: flex-end;
         align-items: center;
         padding: 0 22px;
+        backdrop-filter: blur(10px);
+        box-shadow: 0 2px 2px rgba(0, 0, 0, .1);
     }
 </style>

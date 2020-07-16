@@ -51,6 +51,7 @@
         this.time.date = hourString + now.format('hh:mm')
       },
       start() {
+        this.getTime()
         this.timeHandler = setInterval(() => {
           this.getTime()
         }, 1000)
