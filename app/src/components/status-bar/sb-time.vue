@@ -1,5 +1,5 @@
 <template>
-    <div class="sb-time" @click="lunchTimeControl">
+    <div class="sb-time text-define" @click="lunchTimeControl">
         <span class="weak">{{time.weak}}</span>
         <span class="ap">{{time.date}}</span>
     </div>
@@ -125,7 +125,7 @@
 <style lang="scss">
     .sb-time {
         font-size: 14px;
-        color: #333;
+        color: #fff;
         height: 20px;
         line-height: 20px;
         padding: 0 4px;

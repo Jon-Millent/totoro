@@ -17,7 +17,7 @@ function createWindow () {
     height: 768,
     useContentSize: true,
     width: 1024,
-    skipTaskbar: env !== 'dev',
+    skipTaskbar: env === 'dev',
     frame: false,
     resizable: false,
     webPreferences: {

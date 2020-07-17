@@ -18,7 +18,7 @@
             <docker></docker>
         </div>
 
-        <div class="app-run-cover page-full" @click="isShow = !isShow" :class="{active: isShow}">
+        <div class="app-run-cover page-full" v-show="false" :class="{active: isShow}">
 
         </div>
 
@@ -57,7 +57,7 @@
             background-repeat: no-repeat;
             background-position: top center;
             z-index: 10;
-            background-image: url("../../assets/img/2022854.jpg");
+            background-image: url("../../assets/img/360wallpaper.jpg");
         }
         .desktop-content {
             z-index: 20;
