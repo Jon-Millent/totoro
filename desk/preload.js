@@ -4,7 +4,9 @@
 const baseUrl = __dirname
 const path = require('path');
 const accessDir = path.join(baseUrl, 'access')
+const accessDirName = '/access'
 const { remote } = require('electron')
+const { v4: uuidv4 } = require('uuid');
 
 const Store = require('electron-store');
 const store = new Store();
@@ -59,7 +61,7 @@ class Preload {
       writeFileSync(outputPath, smallBuffer)
     }
 
-    return outputPath
+    return path.join(accessDirName, '/icons/' + fileName + '.png')
   }
 
   // 更换壁纸
@@ -102,7 +104,7 @@ class Preload {
     store.set(key, value)
   }
   static getItem(key) {
-    store.get(key)
+    return store.get(key)
   }
 
   static showChooseFileDialog(filter) {
@@ -123,6 +125,43 @@ class Preload {
     return await remote.app.getFileIcon(path, Object.assign({
       size: 'normal'
     }, config))
+  }
+
+  // 获取桌面应用[名称, path, icon]
+  static async getDesktopApplications() {
+    const { shell } = require('electron');
+
+    const { readdirSync } = require('fs')
+    let desktopPath = remote.app.getPath('desktop')
+    let fileList = readdirSync(desktopPath)
+    let outputList = []
+
+    for(let i=0; i<fileList.length; i++) {
+      let item = fileList[i]
+      if(item.indexOf('.lnk') !== -1) {
+        try {
+          let tPath = path.join(desktopPath, item)
+          const info = shell.readShortcutLink(
+            tPath
+          );
+          let icon = await Preload.getEXEIconFormPath(tPath)
+
+          info.cwd && outputList.push({
+            name: item.replace('.lnk', ''),
+            icon,
+            target: info.target,
+            cwd: info.cwd,
+            id: uuidv4()
+          })
+
+        } catch (e) {
+          //
+          console.log(e, 'e')
+        }
+      }
+    }
+
+    return outputList
   }
 
 }

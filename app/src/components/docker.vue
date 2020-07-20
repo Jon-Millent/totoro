@@ -1,9 +1,6 @@
 <template>
     <div
-        class="docker-controller"
-        @mouseleave="dockerMouseLeave"
-        @mousemove="dockerMouseMove"
-        @mouseenter="dockerMouseEnter">
+        class="docker-controller">
         <div class="docker-target">
 
             <div class="docker-left">
@@ -44,16 +41,7 @@
   export default {
     name: "docker",
     methods: {
-      dockerMouseEnter() {
 
-      },
-      dockerMouseMove(e) {
-        console.log(e, '<-----------------')
-        console.log(e.clientX, e.clientY, '<-----------------')
-      },
-      dockerMouseLeave() {
-
-      }
     }
   }
 </script>

@@ -1,5 +1,5 @@
 // Modules to control application life and create native browser window
-const { app, BrowserWindow } = require('electron')
+const { app, BrowserWindow, protocol } = require('electron')
 const path = require('path')
 const env = process.env.NODE_ENV
 
@@ -46,6 +46,23 @@ app.whenReady().then(() => {
     // dock icon is clicked and there are no other windows open.
     if (BrowserWindow.getAllWindows().length === 0) createWindow()
   })
+
+  protocol.interceptFileProtocol('toto', function(req, callback) {
+    let url = req.url.substr(7);
+    console.log(url, req.url, '<<<<<<<<<<<<<<<')
+    callback({path: path.join(__dirname , url)})
+  },function (error) {
+    if (error)
+      console.error('Failed to register protocol')
+  })
+
+  // protocol.interceptFileProtocol('file', function(req, callback) {
+  //   console.log(req.url, 'req.url')
+  //   callback({path: req.url})
+  // },function (error) {
+  //   if (error)
+  //     console.error('Failed to register protocol')
+  // })
 })
 
 // Quit when all windows are closed, except on macOS. There, it's common

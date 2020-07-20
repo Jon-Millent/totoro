@@ -14,6 +14,14 @@ class TotoroNative {
     }
   }
 
+  static async sleep(time = 1000) {
+    return new Promise(resolve => {
+      setTimeout(()=>{
+        resolve()
+      }, time)
+    })
+  }
+
   static launchApplicationFromPath (path) {
     return window.totoroNative.launchApplicationFromPath(path)
   }
@@ -38,9 +46,10 @@ class TotoroNative {
     return await window.totoroNative.getFileNativeImage(path, config)
   }
 
-  static async getLargeImageFromNativeImage(nativeImage) {
-    return await window.totoroNative.getLargeImageFromNativeImage(nativeImage)
+  static async getDesktopApplications() {
+    return await window.totoroNative.getDesktopApplications()
   }
+
 
 }
 

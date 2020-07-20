@@ -49,7 +49,23 @@
 
 <script>
   export default {
-    name: "desktop-box"
+    name: "desktop-box",
+    data() {
+      return {
+
+      }
+    },
+    mounted() {
+      this.getDesktopIcons()
+    },
+    methods: {
+      getDesktopIcons() {
+        let list = this.$database.getDesktop()
+        console.log(list)
+
+        // this.$database.unInit()
+      }
+    }
   }
 </script>
 
@@ -75,8 +91,6 @@
                     padding: 10px;
                     border-radius: $borderRadius;
                     transition: all .3s ease;
-                    background-color: rgba(255, 255, 255, .06);
-                    backdrop-filter: blur(2px);
 
                     .icon-target {
                         width: 100%;
@@ -101,7 +115,7 @@
                 }
                 .app-name {
                     text-align: center;
-                    padding-top: 4px;
+                    padding-top: 2px;
                     font-size: 14px;
                     word-wrap: break-word;
                     color: #fff;
