@@ -5,7 +5,7 @@ const env = process.env.NODE_ENV
 
 const envConfig = {
   dev: {
-    file: 'http://127.0.0.1:8088'
+    file: 'http://127.0.0.1:8088',
   }
 }
 
@@ -30,6 +30,7 @@ function createWindow () {
 
   mainWindow.maximize()
   mainWindow.loadURL(targetEnv.file)
+  // mainWindow.loadFile('index.html')
 
   // Open the DevTools.
   // mainWindow.webContents.openDevTools()
@@ -47,9 +48,9 @@ app.whenReady().then(() => {
     if (BrowserWindow.getAllWindows().length === 0) createWindow()
   })
 
-  protocol.interceptFileProtocol('toto', function(req, callback) {
+  protocol.registerFileProtocol('toto', function(req, callback) {
     let url = req.url.substr(7);
-    console.log(url, req.url, '<<<<<<<<<<<<<<<')
+    console.log(url, req.url, '!!!!!!!!!!!!!!!!!!!!!<<<<<<<<<<<<<<<')
     callback({path: path.join(__dirname , url)})
   },function (error) {
     if (error)

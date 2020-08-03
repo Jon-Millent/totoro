@@ -35,12 +35,15 @@
     data() {
       return {
         icon: '',
-        isShow: false
+        isShow: false,
+        desktop: []
       }
     },
     mounted() {
+
     },
     methods: {
+
     },
   }
 </script>

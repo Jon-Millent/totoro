@@ -144,7 +144,15 @@ class Preload {
           const info = shell.readShortcutLink(
             tPath
           );
-          let icon = await Preload.getEXEIconFormPath(tPath)
+
+          let icon = ''
+
+          console.log(info.target, 'info.target')
+          try {
+            icon = await Preload.getEXEIconFormPath(info.target)
+          } catch (e) {
+            console.log(e, 'getEXEIconFormPath')
+          }
 
           info.cwd && outputList.push({
             name: item.replace('.lnk', ''),

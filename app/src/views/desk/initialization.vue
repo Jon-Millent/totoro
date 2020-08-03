@@ -2,7 +2,7 @@
     <div class="page-full page-initialization native">
         <div class="loading-dialog">
             <h1>
-                <span>给我一首歌的时间, 马上就好</span>
+                <span>loading</span>
                 <img src="toto:\\access\icons\55D2Nrn4I.png" alt="">
             </h1>
         </div>
