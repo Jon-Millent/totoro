@@ -1,6 +1,5 @@
 <template>
-    <div
-        class="docker-controller">
+    <div class="docker-controller light">
         <div class="docker-target">
 
             <div class="docker-left">
@@ -49,6 +48,18 @@
 <style lang="scss">
     @import "../assets/scss/baseSize";
 
+    .docker-controller.light {
+        .docker-target {
+            background-color: rgba(255, 255, 255, .2);
+        }
+    }
+    .docker-controller.dark {
+        .docker-target {
+            background-color: rgba(3, 3, 3, .2);
+        }
+    }
+
+
     .docker-controller {
         width: 100%;
         height: $dockerHeight;
@@ -61,8 +72,7 @@
             padding: 0 20px;
             border-radius: 20px;
             height: $dockerHeight;
-            background-color: rgba(255, 255, 255, .2);
-            backdrop-filter: blur(20px);
+            backdrop-filter: blur(16px);
             align-items: center;
 
             .docker-right,

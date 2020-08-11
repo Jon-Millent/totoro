@@ -1,13 +1,17 @@
 <template>
-    <div class="desktop-box page-full">
+    <div class="desktop-box page-full" @contextmenu="onConTextMenuClick">
         <div class="super-flex-app full2">
 
             <draggable v-model="appList"  v-bind="group" class="flex-drag-box full2">
                 <transition-group>
 
-                    <div class="app-item native" v-for="(element) in appList" :key="element.id">
+                    <div
+                        class="app-item native"
+                        v-for="(element) in appList"
+                        @click="chooseFile"
+                        :key="element.id">
                         <div class="app-icon">
-                            <div class="icon-target"></div>
+                            <div class="icon-target" :style="{backgroundImage: `url(toto://${element.icon})`}"></div>
                         </div>
                         <div class="app-name text-flow-2">{{element.name}}</div>
                     </div>
@@ -16,11 +20,62 @@
             </draggable>
 
         </div>
+
+        <content-menu ref="contentMenu">
+            <content-menu-group>
+                <content-menu-item
+                        :children="true"
+                        label="新建">
+                    <content-menu :is-child="true">
+                        <content-menu-group>
+                            <content-menu-item
+                                    @click="testClick"
+                                    label="文件夹">
+                            </content-menu-item>
+                            <content-menu-item
+                                    label="应用">
+                            </content-menu-item>
+                        </content-menu-group>
+                    </content-menu>
+                </content-menu-item>
+            </content-menu-group>
+
+            <content-menu-group>
+                <content-menu-item
+                        @click="testClick"
+                        label="终端">
+                </content-menu-item>
+            </content-menu-group>
+
+            <content-menu-group>
+                <content-menu-item
+                        label="个性化">
+                </content-menu-item>
+                <content-menu-item
+                        label="壁纸">
+                </content-menu-item>
+                <content-menu-item
+                        label="颜色">
+                </content-menu-item>
+            </content-menu-group>
+
+            <content-menu-group>
+                <content-menu-item
+                        label="显示设置">
+                </content-menu-item>
+
+                <content-menu-item
+                        label="totoro设置">
+                </content-menu-item>
+            </content-menu-group>
+        </content-menu>
+
     </div>
 </template>
 
 <script>
   import draggable from 'vuedraggable'
+
 
   export default {
     name: "desktop-box",
@@ -32,56 +87,7 @@
           disabled: false,
           ghostClass: "ghost"
         },
-        appList: [
-          {
-            name: "HeidiSql",
-            id: 1
-          },
-          {
-            name: "PyCH",
-            id: 2
-          },
-          {
-            name: "VSCode",
-            id: 3
-          },
-          {
-            name: "Photo Shop",
-            id: 4
-          },
-          {
-            name: "HeidiSql",
-            id: 5
-          },
-          {
-            name: "PyCH",
-            id: 6
-          },
-          {
-            name: "VSCode",
-            id: 7
-          },
-          {
-            name: "Photo Shop",
-            id: 8
-          },
-          {
-            name: "HeidiSql",
-            id: 9
-          },
-          {
-            name: "PyCH",
-            id: 10
-          },
-          {
-            name: "VSCode",
-            id: 11
-          },
-          {
-            name: "Photo Shop",
-            id: 12
-          }
-        ]
+        appList: []
       }
     },
     mounted() {
@@ -91,11 +97,33 @@
       draggable
     },
     methods: {
+      testClick(){
+        console.log('xxxxxxxxxxxxxx')
+      },
       getDesktopIcons() {
         let list = this.$database.getDesktop()
-        console.log(list)
+        list.forEach(item=>{
+          item.icon = encodeURIComponent(item.icon)
+        })
+        this.appList = list
+        console.log(list, '<-----------')
+      },
+      async chooseFile() {
+        let result = await this.$totoroNative.showChooseFileDialog({
+          filters: [
+            { name: 'app', extensions: ['exe'] }
+          ]
+        })
+        let path = result.result.filePaths[0]
 
-        // this.$database.unInit()
+        let iconPath = await this.$totoroNative.getEXEIconFormPath(path)
+        console.log(iconPath, 'resultresultresult <-------')
+      },
+      onConTextMenuClick(e) {
+        this.$refs.contentMenu.activeMenu({
+          x: e.clientX,
+          y: e.clientY
+        })
       }
     }
   }
@@ -114,7 +142,7 @@
                     .app-icon {
                         width: 100px;
                         height: 90px;
-                        padding: 10px;
+                        padding: 10px 10px 4px 10px;
                         border-radius: $borderRadius;
                         transition: all .3s ease;
 
@@ -122,7 +150,8 @@
                             width: 100%;
                             height: 100%;
                             background-size: contain;
-                            background-image: url("../assets/img/gYZBA-ZSe.png");
+                            background-image: url("../assets/img/uTtyXt3jM.png");
+
                             background-repeat: no-repeat;
                             background-position: top center;
                         }
@@ -148,17 +177,17 @@
                         text-shadow: 1px 1px 2px rgba(0, 0, 0, .8);
                     }
                 }
-                .app-item:hover {
+                .app-item:active {
                     .app-icon {
-                        /*box-shadow: 1px 1px 4px rgba(0, 0, 0, .1);*/
-                        /*background-color: rgba(255, 255, 255, .1);*/
+                        box-shadow: 1px 1px 4px rgba(0, 0, 0, .1);
+                        background-color: rgba(255, 255, 255, .1);
                     }
                 }
             }
             .flex-drag-box > span {
                 display: grid;
-                grid-template-columns: repeat(auto-fill, 110px);
-                grid-template-rows: repeat(auto-fill, 140px);
+                grid-template-columns: repeat(auto-fill, 100px);
+                grid-template-rows: repeat(auto-fill, 130px);
                 grid-row-gap: 10px;
                 grid-column-gap: 16px;
                 grid-auto-flow: column;

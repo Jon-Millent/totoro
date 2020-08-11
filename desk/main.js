@@ -1,6 +1,7 @@
 // Modules to control application life and create native browser window
 const { app, BrowserWindow, protocol } = require('electron')
 const path = require('path')
+const fs = require('fs')
 const env = process.env.NODE_ENV
 
 const envConfig = {
@@ -49,9 +50,14 @@ app.whenReady().then(() => {
   })
 
   protocol.registerFileProtocol('toto', function(req, callback) {
-    let url = req.url.substr(7);
-    console.log(url, req.url, '!!!!!!!!!!!!!!!!!!!!!<<<<<<<<<<<<<<<')
-    callback({path: path.join(__dirname , url)})
+    let url = req.url.replace('toto://', '');
+    url = decodeURIComponent(url)
+    const cachedPath = path.normalize(`${__dirname}/${url}`)
+    if (fs.existsSync(cachedPath)) {
+      callback({ path: cachedPath })
+    } else {
+      
+    }
   },function (error) {
     if (error)
       console.error('Failed to register protocol')
