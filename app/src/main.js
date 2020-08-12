@@ -13,12 +13,14 @@ import {
   DesktopBox,
   Docker,
   StatusBar,
-  SbTime
+  SbTime,
+  Draggable
 } from './components/index'
 
 // 桌面应用不考虑按需加载
 import Antd from 'ant-design-vue';
 import 'ant-design-vue/dist/antd.css';
+import 'csshake'
 
 Vue.config.productionTip = false
 
@@ -37,6 +39,7 @@ Vue.component(DesktopBox.name, DesktopBox)
 Vue.component(Docker.name, Docker)
 Vue.component(StatusBar.name, StatusBar)
 Vue.component(SbTime.name, SbTime)
+Vue.component(Draggable.name, Draggable)
 
 new Vue({
   render: h => h(App),

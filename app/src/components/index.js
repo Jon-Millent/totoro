@@ -5,6 +5,7 @@ import DesktopBox from './desktop-box'
 import Docker from './docker'
 import StatusBar from './status-bar'
 import SbTime from './status-bar/sb-time'
+import Draggable from './draggable'
 
 export {
   ContentMenu,
@@ -13,5 +14,6 @@ export {
   DesktopBox,
   Docker,
   StatusBar,
-  SbTime
+  SbTime,
+  Draggable
 }

@@ -1,24 +1,21 @@
 <template>
     <div class="desktop-box page-full" @contextmenu="onConTextMenuClick">
         <div class="super-flex-app full2">
+            <div class="full2 flex-drag-box">
 
-            <draggable v-model="appList"  v-bind="group" class="flex-drag-box full2">
-                <transition-group>
-
-                    <div
-                        class="app-item native"
-                        v-for="(element) in appList"
-                        @click="chooseFile"
-                        :key="element.id">
+                <draggable
+                        :key="element.id"
+                        :img="element.icon"
+                        v-for="(element) in appList">
+                    <div class="app-item native">
                         <div class="app-icon">
                             <div class="icon-target" :style="{backgroundImage: `url(toto://${element.icon})`}"></div>
                         </div>
                         <div class="app-name text-flow-2">{{element.name}}</div>
                     </div>
+                </draggable>
 
-                </transition-group>
-            </draggable>
-
+            </div>
         </div>
 
         <content-menu ref="contentMenu">
@@ -74,19 +71,11 @@
 </template>
 
 <script>
-  import draggable from 'vuedraggable'
-
 
   export default {
     name: "desktop-box",
     data() {
       return {
-        group: {
-          animation: 400,
-          group: "description",
-          disabled: false,
-          ghostClass: "ghost"
-        },
         appList: []
       }
     },
@@ -94,7 +83,6 @@
       this.getDesktopIcons()
     },
     components: {
-      draggable
     },
     methods: {
       testClick(){
@@ -106,7 +94,6 @@
           item.icon = encodeURIComponent(item.icon)
         })
         this.appList = list
-        console.log(list, '<-----------')
       },
       async chooseFile() {
         let result = await this.$totoroNative.showChooseFileDialog({
@@ -136,12 +123,23 @@
             padding: 18px 10px 10px 10px;
 
             .flex-drag-box {
+
+                display: grid;
+                grid-template-columns: repeat(auto-fill, 100px);
+                grid-template-rows: repeat(auto-fill, 130px);
+                grid-row-gap: 10px;
+                grid-column-gap: 16px;
+                grid-auto-flow: column;
+                width: 100%;
+                height: 100%;
+                position: relative;
+
                 .app-item {
                     width: 110px;
 
                     .app-icon {
-                        width: 100px;
-                        height: 90px;
+                        width: 110px;
+                        height: 100px;
                         padding: 10px 10px 4px 10px;
                         border-radius: $borderRadius;
                         transition: all .3s ease;
@@ -184,17 +182,7 @@
                     }
                 }
             }
-            .flex-drag-box > span {
-                display: grid;
-                grid-template-columns: repeat(auto-fill, 100px);
-                grid-template-rows: repeat(auto-fill, 130px);
-                grid-row-gap: 10px;
-                grid-column-gap: 16px;
-                grid-auto-flow: column;
-                width: 100%;
-                height: 100%;
-                position: relative;
-            }
+
 
         }
     }
