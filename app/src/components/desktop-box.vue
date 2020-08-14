@@ -1,19 +1,31 @@
 <template>
-    <div class="desktop-box page-full" @contextmenu="onConTextMenuClick">
+    <div class="desktop-box page-full native" @contextmenu="onConTextMenuClick">
         <div class="super-flex-app full2">
             <div class="full2 flex-drag-box">
 
-                <draggable
-                        :key="element.id"
-                        :img="element.icon"
-                        v-for="(element) in appList">
-                    <div class="app-item native">
-                        <div class="app-icon">
-                            <div class="icon-target" :style="{backgroundImage: `url(toto://${element.icon})`}"></div>
+                <div
+                    class="app-site"
+                    v-for="(item) in deskAppItem"
+                    @mouseenter="onDraggableMouseEnter(item)"
+                    @mouseleave="onDraggableMouseLeave(item)"
+                    :class="{ 'hover-draggable' : item.activeEmpty }"
+                    :key="item.site">
+
+                    <draggable
+                            :img="item.child.icon"
+                            @draggable-change="onDraggableChange"
+                            @draggable-mouseup="onDraggableMouseUp"
+                            v-if="item.child">
+                        <div class="app-item native">
+                            <div class="app-icon">
+                                <div class="icon-target" :style="{backgroundImage: `url(toto://${item.child.icon})`}"></div>
+                            </div>
+                            <div class="app-name text-flow-2">{{item.child.name}}</div>
                         </div>
-                        <div class="app-name text-flow-2">{{element.name}}</div>
-                    </div>
-                </draggable>
+                    </draggable>
+
+                </div>
+
 
             </div>
         </div>
@@ -76,7 +88,15 @@
     name: "desktop-box",
     data() {
       return {
-        appList: []
+        appList: [],
+        maxAppLength: 100,
+        isDraggable: false,
+
+        deskAppItem: [],
+
+        draggableSave: {
+          nowTarget: null
+        }
       }
     },
     mounted() {
@@ -85,15 +105,50 @@
     components: {
     },
     methods: {
+      onDraggableMouseUp() {
+        if( this.draggableSave.nowTarget ) {
+
+          this.draggableSave.nowTarget.activeEmpty = false
+
+          if(!this.draggableSave.nowTarget.child) {
+            //
+          }
+
+        }
+      },
+      onDraggableChange(status){
+        this.isDraggable = status
+      },
+      onDraggableMouseEnter(target) {
+        if(this.isDraggable) {
+          if(!target.child) {
+            target.activeEmpty = true
+          }
+
+          this.draggableSave.nowTarget = target
+          // target.child.activeEmpty = true
+        }
+      },
+      onDraggableMouseLeave(target) {
+        if(this.isDraggable) {
+          if(target.activeEmpty) {
+            target.activeEmpty = false
+          }
+
+          this.draggableSave.nowTarget = null
+        }
+      },
       testClick(){
         console.log('xxxxxxxxxxxxxx')
       },
       getDesktopIcons() {
         let list = this.$database.getDesktop()
-        list.forEach(item=>{
+        list.forEach((item, index)=>{
           item.icon = encodeURIComponent(item.icon)
+          item.site = index
         })
         this.appList = list
+        this.deskAppItem = this.getAppItem()
       },
       async chooseFile() {
         let result = await this.$totoroNative.showChooseFileDialog({
@@ -111,6 +166,29 @@
           x: e.clientX,
           y: e.clientY
         })
+      },
+      getAppItem() {
+        let item = []
+
+        for(let i=0; i<this.maxAppLength; i++) {
+
+          let row = {
+            site: i,
+            child: null,
+            activeEmpty: false, //对于空的位置 hover
+          }
+
+          this.appList.forEach(function (inSite) {
+            if(inSite.site === row.site) {
+              row.child = inSite
+            }
+          })
+
+          item.push(row)
+        }
+
+        console.log(item, 'item')
+        return item
       }
     }
   }
@@ -125,14 +203,26 @@
             .flex-drag-box {
 
                 display: grid;
-                grid-template-columns: repeat(auto-fill, 100px);
-                grid-template-rows: repeat(auto-fill, 130px);
+                grid-template-columns: repeat(auto-fill, minmax(110px, 1fr));
+                grid-template-rows: repeat(auto-fill, minmax(130px, 1fr));
                 grid-row-gap: 10px;
                 grid-column-gap: 16px;
                 grid-auto-flow: column;
                 width: 100%;
                 height: 100%;
                 position: relative;
+
+                .app-site {
+                    position: relative;
+                    box-shadow: 0 0 0 3px rgba(255, 255, 255, .0);
+                    transition: box-shadow, border-radius  .3s ease;
+                    border-radius: 0;
+
+                }
+                .app-site.hover-draggable {
+                    box-shadow: 0 0 0 3px rgba(255, 255, 255, .3);
+                    border-radius: 10px;
+                }
 
                 .app-item {
                     width: 110px;

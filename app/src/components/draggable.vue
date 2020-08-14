@@ -66,8 +66,10 @@
     },
     methods: {
       dragMouseDown(e) {
-        this.isDown = true
-        this.save.before.x = e.clientX
+        if(e.which === 1){
+          this.isDown = true
+          this.save.before.x = e.clientX
+        }
       },
       globalMouseMove(e) {
         if(this.isDown) {
@@ -75,12 +77,13 @@
           if(!this.isUpdateValue) {
             this.isUpdateValue = true
             this.updateV3()
+            this.$emit('draggable-change', true)
           }
 
           this.ghostShow = true
 
           this.save.now.x = e.clientX
-          this.save.now.y = e.clientY - 14
+          this.save.now.y = e.clientY + 4
 
           this.save.deg += (this.save.now.x - this.save.before.x)
 
@@ -97,10 +100,15 @@
       globalMouseUp() {
         if(this.isDown) {
           this.isDown = false
-          this.tweenBottom()
 
           this.isUpdateValue = false
           clearInterval( this.save.beforeTime )
+          // this.tweenBottom()
+
+          this.ghostShow = false
+          this.save.deg = 0
+          this.$emit('draggable-mouseup')
+          this.$emit('draggable-change', false)
         }
       },
 
@@ -108,7 +116,10 @@
       tweenBottom() {
 
         let coords = {y: this.save.now.y}
-        let target = this.save.now.y + 2000
+        let target = this.save.now.y + 1000
+
+        console.log(coords)
+        console.log(target)
 
         let root = this
         function animate(time) {
@@ -120,11 +131,12 @@
         requestAnimationFrame(animate)
 
         new tween.Tween(coords) // Create a new tween that modifies 'coords'.
-          .to({y: target}, 400) // Move to (300, 200) in 1 second.
+          .to({y: target}, 4000) // Move to (300, 200) in 1 second.
           .easing(tween.Easing.Sinusoidal.In) // Use an easing function to make the animation smooth.
           .onUpdate(() => {
             // Called after tween.js updates 'coords'.
             // Move 'box' to the position described by 'coords' with a CSS translation.
+            console.log(coords.y, 'coords.y')
             this.save.now.y = coords.y
           }).start()
 
