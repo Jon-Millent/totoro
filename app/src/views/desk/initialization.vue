@@ -38,7 +38,8 @@
       }
     },
     mounted() {
-      this.check()
+      this.$router.replace('/desktop')
+      // this.check()
     }
   }
 </script>

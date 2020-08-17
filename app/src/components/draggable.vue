@@ -69,6 +69,7 @@
         if(e.which === 1){
           this.isDown = true
           this.save.before.x = e.clientX
+          this.$emit('draggable-mousedown')
         }
       },
       globalMouseMove(e) {
