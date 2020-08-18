@@ -113,6 +113,8 @@
             </content-menu-group>
         </content-menu>
 
+
+
     </div>
 </template>
 
@@ -133,6 +135,15 @@
           nowActiveItem: null,
           activeEmptyIndex: -1,
           activeType: 'empty', // empty | app
+        },
+
+        dialog: {
+          newCollectionRename: false
+        },
+        form: {
+          newCollectionRename: {
+            name: ''
+          }
         }
       }
     },
@@ -169,6 +180,9 @@
       }
     },
     methods: {
+      hideNewCollectionRenameDialog() {
+
+      },
       onDraggableMouseDown(item) {
         this.draggableSave.nowActiveItem = item
       },
@@ -181,8 +195,69 @@
             // 把此对象放置到 now target 位置
             this.draggableSave.nowActiveItem.child.site = this.draggableSave.nowTarget.site
           } else {
-            // 新建分组文件夹
-            // to do...
+
+            switch (this.draggableSave.nowTarget.child.type) {
+              case 'app':
+                if(this.draggableSave.nowActiveItem.child.type ===  this.draggableSave.nowTarget.child.type) {
+                  // 新建分组
+                  // 根据 id查找
+
+                  let nowActive = null
+                  let nowTarget = null
+
+                  this.appList.forEach( (inSite) => {
+                    if(inSite.id === this.draggableSave.nowActiveItem.child.id) {
+                      nowActive = inSite
+                    }
+                    if(inSite.id === this.draggableSave.nowTarget.child.id) {
+                      nowTarget = inSite
+                    }
+                  })
+
+                  if(!nowActive || !nowTarget) {
+                    return
+                  }
+                  // remove
+                  this.appList.splice(
+                    this.appList.indexOf(nowActive), 1
+                  )
+                  this.appList.splice(
+                    this.appList.indexOf(nowTarget), 1,
+                    {
+                      "site": nowTarget.site,
+                      "type": "collection",
+                      "name": "no name",
+                      "children": [
+                        nowActive,
+                        nowTarget
+                      ]
+                    }
+                  )
+                }
+                break;
+
+                case 'collection':
+                  if(this.draggableSave.nowActiveItem.child.type === 'app') {
+                    // app 合并到 合集
+                    let nowActive = this.appList.find( item =>{
+                      return item.id === this.draggableSave.nowActiveItem.child.id
+                    })
+
+                    // remove
+                    this.appList.splice(
+                      this.appList.indexOf(nowActive), 1
+                    )
+
+                    // append
+                    this.draggableSave.nowTarget.child.children.unshift(
+                      nowActive
+                    )
+                  }
+
+                  break;
+            }
+
+
           }
         }
 
@@ -236,7 +311,7 @@
           "icon": "%5Caccess%5Cicons%5CBCA_C62Nu.png",
           "target": "F:\\BaiduNetdiskDownload\\红绿小工具\\FScapture7.2 中文绿色特别版\\FSCapture.exe",
           "cwd": "F:\\BaiduNetdiskDownload\\红绿小工具\\FScapture7.2 中文绿色特别版",
-          "id": "fb36f336-b8f5-4e58-809f-cd26e93b7b20",
+          "id": "fb36f336-b8f5-4e58-809f-cd26e93b7b201",
           "site": 0,
           "type": "app"
         }, {
@@ -244,7 +319,7 @@
           "icon": "%5Caccess%5Cicons%5Cr6vQWZsZN.png",
           "target": "E:\\work\\apk\\getipqrcode\\getIpQrCode.exe",
           "cwd": "E:\\work\\apk\\getipqrcode",
-          "id": "6d806a7c-a1d2-4994-9365-e33d0869f7e3",
+          "id": "6d806a7c-a1d2-4994-9365-e33d0869f7e32",
           "site": 1,
           "type": "app"
         }, {
@@ -252,7 +327,7 @@
           "icon": "%5Caccess%5Cicons%5CSWhDjL2F1r.png",
           "target": "D:\\Program Files\\HeidiSQL\\heidisql.exe",
           "cwd": "D:\\Program Files\\HeidiSQL",
-          "id": "7a54c2fa-35b3-49d1-ac91-87da341c543d",
+          "id": "7a54c2fa-35b3-49d1-ac91-87da341c543d3",
           "site": 2,
           "type": "app"
         }, {
@@ -260,7 +335,7 @@
           "icon": "%5Caccess%5Cicons%5C4MREf86K7.png",
           "target": "C:\\Users\\Administrator\\AppData\\Local\\Programs\\keymanager\\KeyManager.exe",
           "cwd": "C:\\Users\\Administrator\\AppData\\Local\\Programs\\keymanager",
-          "id": "e91d4222-1f8e-4928-a61a-c92f88013ee9",
+          "id": "e91d4222-1f8e-4928-a61a-c92f88013ee94",
           "site": 3,
           "type": "app"
         }, {
@@ -268,7 +343,7 @@
           "icon": "%5Caccess%5Cicons%5C-SCMVnsTeD.png",
           "target": "D:\\Program Files\\adobe\\ps\\Adobe Photoshop CC 2019\\Photoshop.exe",
           "cwd": "D:\\Program Files\\adobe\\ps\\Adobe Photoshop CC 2019",
-          "id": "7ff018ab-2707-4584-bc0b-f87dd159c267",
+          "id": "7ff018ab-2707-4584-bc0b-f87dd159c2675",
           "site": 4,
           "type": "app"
         }, {
@@ -276,7 +351,7 @@
           "icon": "%5Caccess%5Cicons%5CIjCMy8NKx.png",
           "target": "E:\\work\\apk\\Core-Windows\\v2rayN-Core\\v2rayN.exe",
           "cwd": "E:\\work\\apk\\Core-Windows\\v2rayN-Core",
-          "id": "dcfd31f2-c236-4f92-a01d-7754ac55fcf9",
+          "id": "dcfd31f2-c236-4f92-a01d-7754ac55fcf96",
           "site": 5,
           "type": "app"
         }, {
@@ -284,7 +359,7 @@
           "icon": "null",
           "target": "C:\\Program Files\\JetBrains\\WebStorm 2019.3.3\\bin\\webstorm64.exe",
           "cwd": "C:\\Program Files\\JetBrains\\WebStorm 2019.3.3\\bin",
-          "id": "843784a8-4727-4c5d-85d9-5c3a09fa476d",
+          "id": "843784a8-4727-4c5d-85d9-5c3a09fa476d7",
           "site": 6,
           "type": "app"
         }, {
@@ -292,7 +367,7 @@
           "icon": "%5Caccess%5Cicons%5Czoc0LlF1e.png",
           "target": "D:\\eastmoney\\swc8\\mainfree.exe",
           "cwd": "D:\\eastmoney\\swc8",
-          "id": "fa00a640-a559-4218-861a-67c4d91cebd3",
+          "id": "fa00a640-a559-4218-861a-67c4d91cebd38",
           "site": 7,
           "type": "app"
         }, {
@@ -300,7 +375,7 @@
           "icon": "%5Caccess%5Cicons%5CVhaCbQdMl.png",
           "target": "D:\\eastmoney\\swc8\\maintrade.exe",
           "cwd": "D:\\eastmoney\\swc8",
-          "id": "44b28f29-dfc7-47c8-bc9c-db01d3b1dd5d",
+          "id": "44b28f29-dfc7-47c8-bc9c-db01d3b1dd5d9",
           "site": 8,
           "type": "app"
         }, {
@@ -313,7 +388,7 @@
               "icon": "%5Caccess%5Cicons%5CnTv0qnatA.png",
               "target": "D:\\Program Files (x86)\\Tencent\\微信web开发者工具\\微信开发者工具.exe",
               "cwd": "D:\\Program Files (x86)\\Tencent\\微信web开发者工具",
-              "id": "fc621cc5-4f38-466e-a02d-c5cecea20f5f",
+              "id": "fc621cc5-4f38-466e-a02d-c5cecea20f5fa1",
               "site": -1
             },
             {
@@ -321,7 +396,7 @@
               "icon": "%5Caccess%5Cicons%5CVhaCbQdMl.png",
               "target": "D:\\eastmoney\\swc8\\maintrade.exe",
               "cwd": "D:\\eastmoney\\swc8",
-              "id": "44b28f29-dfc7-47c8-bc9c-db01d3b1dd5d",
+              "id": "44b28f29-dfc7-47c8-bc9c-db01d3b1dd5da2",
               "site": 8,
               "type": "app"
             },
@@ -330,7 +405,7 @@
               "icon": "%5Caccess%5Cicons%5C-SCMVnsTeD.png",
               "target": "D:\\Program Files\\adobe\\ps\\Adobe Photoshop CC 2019\\Photoshop.exe",
               "cwd": "D:\\Program Files\\adobe\\ps\\Adobe Photoshop CC 2019",
-              "id": "7ff018ab-2707-4584-bc0b-f87dd159c267",
+              "id": "7ff018ab-2707-4584-bc0b-f87dd159c267a3",
               "site": 4,
               "type": "app"
             },
@@ -339,7 +414,7 @@
               "icon": "%5Caccess%5Cicons%5CIjCMy8NKx.png",
               "target": "E:\\work\\apk\\Core-Windows\\v2rayN-Core\\v2rayN.exe",
               "cwd": "E:\\work\\apk\\Core-Windows\\v2rayN-Core",
-              "id": "dcfd31f2-c236-4f92-a01d-7754ac55fcf9",
+              "id": "dcfd31f2-c236-4f92-a01d-7754ac55fcf9a4",
               "site": 5,
               "type": "app"
             },
@@ -348,7 +423,7 @@
               "icon": "%5Caccess%5Cicons%5CnTv0qnatA.png",
               "target": "D:\\Program Files (x86)\\Tencent\\微信web开发者工具\\微信开发者工具.exe",
               "cwd": "D:\\Program Files (x86)\\Tencent\\微信web开发者工具",
-              "id": "fc621cc5-4f38-466e-a02d-c5cecea20f5f",
+              "id": "fc621cc5-4f38-466e-a02d-c5cecea20f5fa5",
               "site": -1
             },
             {
@@ -356,98 +431,8 @@
               "icon": "%5Caccess%5Cicons%5CVhaCbQdMl.png",
               "target": "D:\\eastmoney\\swc8\\maintrade.exe",
               "cwd": "D:\\eastmoney\\swc8",
-              "id": "44b28f29-dfc7-47c8-bc9c-db01d3b1dd5d",
+              "id": "44b28f29-dfc7-47c8-bc9c-db01d3b1dd5da6",
               "site": 8,
-              "type": "app"
-            },
-            {
-              "name": "Photoshop.exe - 快捷方式",
-              "icon": "%5Caccess%5Cicons%5C-SCMVnsTeD.png",
-              "target": "D:\\Program Files\\adobe\\ps\\Adobe Photoshop CC 2019\\Photoshop.exe",
-              "cwd": "D:\\Program Files\\adobe\\ps\\Adobe Photoshop CC 2019",
-              "id": "7ff018ab-2707-4584-bc0b-f87dd159c267",
-              "site": 4,
-              "type": "app"
-            },
-            {
-              "name": "v2rayN.exe - 快捷方式",
-              "icon": "%5Caccess%5Cicons%5CIjCMy8NKx.png",
-              "target": "E:\\work\\apk\\Core-Windows\\v2rayN-Core\\v2rayN.exe",
-              "cwd": "E:\\work\\apk\\Core-Windows\\v2rayN-Core",
-              "id": "dcfd31f2-c236-4f92-a01d-7754ac55fcf9",
-              "site": 5,
-              "type": "app"
-            },
-
-
-            {
-              "name": "微信开发者工具",
-              "icon": "%5Caccess%5Cicons%5CnTv0qnatA.png",
-              "target": "D:\\Program Files (x86)\\Tencent\\微信web开发者工具\\微信开发者工具.exe",
-              "cwd": "D:\\Program Files (x86)\\Tencent\\微信web开发者工具",
-              "id": "fc621cc5-4f38-466e-a02d-c5cecea20f5f",
-              "site": -1
-            },
-            {
-              "name": "东方财富证券交易",
-              "icon": "%5Caccess%5Cicons%5CVhaCbQdMl.png",
-              "target": "D:\\eastmoney\\swc8\\maintrade.exe",
-              "cwd": "D:\\eastmoney\\swc8",
-              "id": "44b28f29-dfc7-47c8-bc9c-db01d3b1dd5d",
-              "site": 8,
-              "type": "app"
-            },
-            {
-              "name": "Photoshop.exe - 快捷方式",
-              "icon": "%5Caccess%5Cicons%5C-SCMVnsTeD.png",
-              "target": "D:\\Program Files\\adobe\\ps\\Adobe Photoshop CC 2019\\Photoshop.exe",
-              "cwd": "D:\\Program Files\\adobe\\ps\\Adobe Photoshop CC 2019",
-              "id": "7ff018ab-2707-4584-bc0b-f87dd159c267",
-              "site": 4,
-              "type": "app"
-            },
-            {
-              "name": "v2rayN.exe - 快捷方式",
-              "icon": "%5Caccess%5Cicons%5CIjCMy8NKx.png",
-              "target": "E:\\work\\apk\\Core-Windows\\v2rayN-Core\\v2rayN.exe",
-              "cwd": "E:\\work\\apk\\Core-Windows\\v2rayN-Core",
-              "id": "dcfd31f2-c236-4f92-a01d-7754ac55fcf9",
-              "site": 5,
-              "type": "app"
-            },
-            {
-              "name": "微信开发者工具",
-              "icon": "%5Caccess%5Cicons%5CnTv0qnatA.png",
-              "target": "D:\\Program Files (x86)\\Tencent\\微信web开发者工具\\微信开发者工具.exe",
-              "cwd": "D:\\Program Files (x86)\\Tencent\\微信web开发者工具",
-              "id": "fc621cc5-4f38-466e-a02d-c5cecea20f5f",
-              "site": -1
-            },
-            {
-              "name": "东方财富证券交易",
-              "icon": "%5Caccess%5Cicons%5CVhaCbQdMl.png",
-              "target": "D:\\eastmoney\\swc8\\maintrade.exe",
-              "cwd": "D:\\eastmoney\\swc8",
-              "id": "44b28f29-dfc7-47c8-bc9c-db01d3b1dd5d",
-              "site": 8,
-              "type": "app"
-            },
-            {
-              "name": "Photoshop.exe - 快捷方式",
-              "icon": "%5Caccess%5Cicons%5C-SCMVnsTeD.png",
-              "target": "D:\\Program Files\\adobe\\ps\\Adobe Photoshop CC 2019\\Photoshop.exe",
-              "cwd": "D:\\Program Files\\adobe\\ps\\Adobe Photoshop CC 2019",
-              "id": "7ff018ab-2707-4584-bc0b-f87dd159c267",
-              "site": 4,
-              "type": "app"
-            },
-            {
-              "name": "v2rayN.exe - 快捷方式",
-              "icon": "%5Caccess%5Cicons%5CIjCMy8NKx.png",
-              "target": "E:\\work\\apk\\Core-Windows\\v2rayN-Core\\v2rayN.exe",
-              "cwd": "E:\\work\\apk\\Core-Windows\\v2rayN-Core",
-              "id": "dcfd31f2-c236-4f92-a01d-7754ac55fcf9",
-              "site": 5,
               "type": "app"
             }
           ]
@@ -455,7 +440,7 @@
           "name": "工作!==生活",
           "target": "D:\\Program Files (x86)\\Tencent\\微信web开发者工具\\微信开发者工具.exe",
           "cwd": "D:\\Program Files (x86)\\Tencent\\微信web开发者工具",
-          "id": "fc621cc5-4f38-466e-a02d-c5cecea20f5f",
+          "id": "fc621cc5-4f38-466e-a02d-c5cecea20f5f111",
           "site": 10,
           "type": "folder",
           "folder-icon": "some",
